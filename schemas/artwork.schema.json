@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NormalizedArtwork",
+  "type": "object",
+  "required": [
+    "source_id",
+    "object_id",
+    "title",
+    "rights_status"
+  ],
+  "properties": {
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artist": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_category": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "image_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "rights_status": {
+      "enum": [
+        "public_domain",
+        "cc0",
+        "restricted",
+        "unknown"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

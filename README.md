@@ -1,38 +1,26 @@
 # E-Ink Gallery Download
 
-Incremental, rights-aware artwork curation for **E Ink Spectra 6** (800×480 landscape / 480×800 portrait).
+Incremental Public Domain / CC0 image curation for **E Ink Spectra 6** (800×480 landscape / 480×800 portrait).
 
-## Status
+**Status:** specification / research smoke-test baseline. No production Gateway or unattended collection is enabled. The Met has a bounded single-object client; live download from Mac/NAS remains to be tested.
 
-**Planning / contract baseline (v0.1.0-draft).** No source adapter or unattended downloader is enabled yet. Official API, image reuse and rate-limit rules must be verified per source before live harvesting.
+## Documents
+- [SRS](docs/SRS.md) · [Architecture](docs/architecture.md) · [Acceptance](docs/acceptance.md)
+- [The Met integration specification](docs/sources/met.md) · [Source template](docs/sources/SOURCE_SPEC_TEMPLATE.md)
+- [Artwork schema](schemas/artwork.schema.json) · [Curator decision schema](schemas/curator_decision.schema.json)
+- [Notion SRS](https://app.notion.com/p/40349fae448081cd9b8ed95359b7a31b) · [Source registry](https://app.notion.com/p/2906d090d1be42ca9b2438948552acf2)
 
-## Documentation
+## Role ownership
+L1 GPT-6 researches each API/policy and produces integration specifications. L2 Coding Agent develops Gateway and adapters, with tests. L3 deterministic Python executes; local small model scores candidates and reviews daily summaries.
 
-- [Software requirements](docs/SRS.md)
-- [Architecture and ownership](docs/architecture.md)
-- [Source integration specification template](docs/sources/SOURCE_SPEC_TEMPLATE.md)
-- [Acceptance test plan](docs/acceptance.md)
-- [Normalized artwork contract](schemas/artwork.schema.json)
-- [Local curator decision contract](schemas/curator_decision.schema.json)
-
-Notion: [Project SRS](https://app.notion.com/p/40349fae448081cd9b8ed95359b7a31b) · [Source registry](https://app.notion.com/p/2906d090d1be42ca9b2438948552acf2)
-
-## Responsibility split
-
-- **L1 (research):** source API, classification, rights and quota research with official evidence.
-- **L2 (engineering):** adapters, shared gateway, persistence, download processing, tests.
-- **L3 (operations):** deterministic Python execution; small local model limited to curation and daily summaries.
-
-## Development baseline
-
-Python 3.11+. Standard-library-only contract validation:
-
+## Test locally (Python 3.11+; standard library)
 ```sh
-PYTHONPATH=src python -m unittest discover -s tests -v
+python -m unittest discover -s tests -v
+python -m gallery_download.met --object-id 436535
+# Explicitly download a single rights-eligible item:
+python -m gallery_download.met --object-id 436535 --download --out ./Artworks
 ```
 
-No API tokens, downloaded images, SQLite state, or private NAS paths belong in this repository.
+The Met client is a research smoke test, not a persistent multi-source scheduler or compliant production rate manager. Do not schedule automated downloads until source policy, Gateway quotas, durable checkpoints and acceptance tests pass.
 
-## Planned sequence
-
-The Met source research → shared contract and deterministic MVP → SMK integration validation → modern-art sources → local-model evaluation → guarded automation.
+No API keys, user images, local SQLite or NAS paths belong in this repository.
